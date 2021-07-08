@@ -1,0 +1,21 @@
+import requests
+import json
+
+cache = {}
+cur_1 = input()
+exc = json.loads(requests.get(f'http://www.floatrates.com/daily/{cur_1}.json').content)
+if cur_1 != 'usd':
+    cache['usd'] = exc['usd']['rate']
+if cur_1 != 'eur':
+    cache['eur'] = exc['eur']['rate']
+cur_2 = input().lower()
+while cur_2 != '':
+    money = float(input())
+    print('Checking the cache...')
+    if cur_2 not in cache:
+        print('Sorry, but it is not in the cache!')
+        cache[cur_2] = exc[cur_2]['rate']
+    else:
+        print('Oh! It is in the cache!')
+    print(f'You received {cache[cur_2] * money} {cur_2.upper()}.')
+    cur_2 = input().lower()
